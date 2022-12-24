@@ -23,8 +23,10 @@ const reducer = (state = initialState, action) => {
   console.log(action)
   const newState = state
   switch (action.type) {
-    case('VOTE'):
+    case 'VOTE':
       return newState.map(anec => parseInt(anec.id) === parseInt(action.data.id) ? { ...anec, votes: anec.votes += 1 } : anec)
+    case 'ADD_ANECDOTE':
+      return [...newState, action.data]
     default:
       return state
   }
@@ -36,6 +38,13 @@ export const voteFor = (id) => {
     data: {
       id: parseInt(id)
     }
+  }
+}
+
+export const createAnecdote = (content) => {
+  return {
+    type: 'ADD_ANECDOTE',
+    data: asObject(content)
   }
 }
 
