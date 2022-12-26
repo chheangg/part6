@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 
 const Notification = () => {
-  const notification = useSelector(({notifications}) => notifications)
+  const notification = useSelector(({notification}) => notification)
   const style = {
     border: 'solid',
     padding: 10,
@@ -9,7 +9,7 @@ const Notification = () => {
   }
   return (
     <div style={style}>
-      {notification.map(notif => <div key={notif.id}>{notif.msg}</div>)}
+      {notification}
     </div>
   )
 }
