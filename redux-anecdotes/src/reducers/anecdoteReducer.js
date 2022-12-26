@@ -27,7 +27,7 @@ const anecdoteSlice = createSlice({
   reducers: {
     voteFor(state, action) {
       const content = action.payload
-      return state.map(anec => parseInt(anec.id) === parseInt(content) ? { ...anec, votes: anec.votes += 1} : anec)
+      return state.map(anec => parseInt(anec.id) === parseInt(content) ? { ...anec, votes: anec.votes + 1} : anec)
     },
     createAnecdote(state, action) {
       const content = action.payload
