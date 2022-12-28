@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
-import { voteFor } from "../reducers/anecdoteReducer"
+import { update } from "../reducers/anecdoteReducer"
 import { setNotification } from "../reducers/notificationReducer"
+import anecdoteService from "../services/anecdoteService"
 
 const Anecdote = ({content, votes, id, eventHandler}) => {
   return (
@@ -17,12 +18,21 @@ const Anecdote = ({content, votes, id, eventHandler}) => {
 }
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(({anecdotes, filter}) => [...anecdotes].filter(anec => anec.content.includes(filter)).sort((prev, next) => prev.votes > next.votes ? -1 : prev.votes === next.votes ? 0 : 1))
+  const anecdotes = useSelector(({anecdotes, filter}) => {
+    if (anecdotes.length > 0) {
+      return [...anecdotes]
+      .filter(anec => anec.content.includes(filter))
+      .sort((prev, next) => prev.votes > next.votes ? -1 : prev.votes === next.votes ? 0 : 1)
+    } else {
+      return []
+    }
+  })
   const dispatch = useDispatch()
 
-  const vote = (id, content) => {
-    dispatch(voteFor(id))
-    dispatch(setNotification(`you voted for "${content}"`))
+  const vote = async (id, content) => {
+    const upvotedAnecdote = await anecdoteService.update(id, {...content, votes: content.votes + 1})
+    dispatch(update(upvotedAnecdote))
+    dispatch(setNotification(`you voted for "${content.content}"`))
     setTimeout(() => dispatch(setNotification('')), 5000)
   }
 
@@ -34,7 +44,7 @@ const AnecdoteList = () => {
           id={anecdote.id} 
           votes={anecdote.votes} 
           content={anecdote.content} 
-          eventHandler={() => vote(anecdote.id, anecdote.content)} 
+          eventHandler={() => vote(anecdote.id, anecdote)} 
         />
         )}
     </>
