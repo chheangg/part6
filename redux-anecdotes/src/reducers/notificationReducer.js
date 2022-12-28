@@ -6,12 +6,20 @@ const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    setNotification(state, action) {
+    updateNotification(state, action) {
       const content = action.payload
       return content
     }
   }
 })
 
-export const { setNotification } = notificationSlice.actions
+export const { updateNotification } = notificationSlice.actions
+
+export const setNotification = (content, seconds) => {
+  return dispatch => {
+    dispatch(updateNotification(content))
+    setTimeout(() => dispatch(updateNotification('')), seconds * 1000)
+  }
+}
+
 export default notificationSlice.reducer
