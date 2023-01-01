@@ -31,7 +31,7 @@ const AnecdoteList = ({anecdotes, voteAnecdote, setNotification}) => {
 
   const vote = async (id, content) => {
     voteAnecdote(id, content)
-    setNotification(`you voted for "${content.content}"`, 10)
+    setNotification(`you voted for "${content.content}"`, 5)
   }
 
   return (
